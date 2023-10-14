@@ -2,7 +2,7 @@
 
 ## Iterations
 
-+ [ ] Barebones
++ [x] Barebones
     + Single name is passed in through CLI arg
     + Output non-pretty to CLI
         + Maybe even just JSON?
