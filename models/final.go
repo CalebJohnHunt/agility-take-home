@@ -3,6 +3,7 @@ package models
 type Final struct {
 	Person     Person
 	Starships  []Starship
-	HomePlanet Planet
+	// This is a pointer to allow for the possibility of no HomePlanet
+	HomePlanet *Planet
 	Species    []Species
 }
