@@ -30,3 +30,17 @@ go run . --port <port> # default port: 8080
 + [ ] Make it look… better?
     + Both the code
     + and the website
+
+## Why
+
+I used Go, [Go's templating library](https://pkg.go.dev/text/template), and [HTMX](https://htmx.org/).
+
+I've used Go quite a bit on my hobby projects, so I felt pretty confident in using it for the API and logic portion of this challenge.
+I thought I would be doing a TUI, which I've also done using Go before, but then I recalled Go's templating library.
+A few online creators I follow have been using it recently for their hobby projects, so I figured it would be worth a go, and it was great!
+If I needed to get this project done as quickly as possible, I probably would have skipped the templating for the CLI version, but since I knew I could be a bit creative I went for it.
+And then when I decided I wanted to give this project more of an "app-like" experience, I realized I could re-use my templating for the website!
+As for HTMX, I've read about it a few times in the past, and my coworker used it for a hackathon, so while I wasn't familiar with it exactly, I knew it would work for what I wanted here.
+
+All-in-all, I'm pretty happy with my tech stack (if you can even call it that haha).
+I've been looking for a reason to use templating and HTMX, so I'm glad I finally got it with this project.
