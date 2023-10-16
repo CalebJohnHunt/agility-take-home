@@ -1,27 +1,38 @@
 {{- /*I gotta use these whitespace trimmers to clean this up*/ -}}
-Person: {{.Person.Name}}
+<h1>Person: {{.Person.Name}}</h1>
 {{with .Starships}}
-Starship{{if gt (len .) 1}}s{{end}}:
-{{range .}}
-	Name: {{.Name}}
-	Class: {{.StarshipClass}}
-	Capacity: {{.CargoCapacity}}
-{{end}}{{else}}
-No starships!
-{{end}}{{with .HomePlanet}}
-Home planet:
-
-	Name: {{.Name}}
-	Population: {{.Population}}
-	Climate: {{.Climate}}
+	<h2>Starship{{if gt (len .) 1}}s{{end}}:</h2>
+	<ul>
+		{{range .}}
+		<li>
+			<p>Name: {{.Name}}</p>
+			<p>Class: {{.StarshipClass}}</p>
+			<p>Capacity: {{.CargoCapacity}}</p>
+		</li>
+		{{end}}
+	</ul>
 {{else}}
-No home planet!
-{{end}}{{with .Species}}
-Species:
+	<h2>No starships!</h2>
+{{end}}
+{{with .HomePlanet}}
+	<h2>Home planet:</h2>
+	<p>Name: {{.Name}}</p>
+	<p>Population: {{.Population}}</p>
+	<p>Climate: {{.Climate}}</p>
+{{else}}
+	<h2>No home planet!</h2>
+{{end}}
+{{with .Species}}
+	<h2>Species:</h2>
+	<ul>
 {{range .}}
-	Name: {{.Name}}
-	Language: {{.Language}}
-	AverageLifespan: {{.AverageLifespan}}
-{{end}}{{else}}
-No species information!
+	<li>
+		<p>Name: {{.Name}}</p>
+		<p>Language: {{.Language}}</p>
+		<p>AverageLifespan: {{.AverageLifespan}}</p>
+	</li>
+{{end}}
+	</ul>
+{{else}}
+	<h2>No species information!</h2>
 {{end}}

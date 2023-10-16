@@ -2,9 +2,11 @@ package main
 
 import (
 	"agility-take-home/models"
+	"flag"
 	"fmt"
+	"io"
 	"log"
-	"os"
+	"net/http"
 	"slices"
 	"strings"
 	"sync"
@@ -17,14 +19,31 @@ const (
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Printf("./%s <search>", os.Args[0])
-		return
-	}
+	port := flag.Int("port", 8080, "port on which to run")
+	flag.Parse()
 
-	searchResult, err := getFromUrl[models.Response[models.Person]](fmt.Sprintf("%s/people?search=%s", apiUri, os.Args[1]))
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "./templates/index.html")
+	})
+
+	http.HandleFunc("/search", func(w http.ResponseWriter, r *http.Request) {
+		rq := strings.FieldsFunc(r.URL.RawQuery, func(r rune) bool {return r == '='})
+		if len(rq) < 2 || len(rq) > 0 && rq[0] != "name" {
+			return
+		}
+		name := rq[1]
+		searchCharacterName(name, w)
+	})
+
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", *port), nil); err != nil {
+		panic(err)
+	}
+}
+
+func searchCharacterName(name string, w io.Writer) {
+	searchResult, err := getFromUrl[models.Response[models.Person]](fmt.Sprintf("%s/people?search=%s", apiUri, name))
 	if err != nil {
-		log.Fatalf("Encountered error while searching for \"%s\". Error: %s", os.Args[1], err)
+		log.Fatalf("Encountered error while searching for \"%s\". Error: %s", name, err)
 	}
 
 	people := searchResult.Results
@@ -41,7 +60,7 @@ func main() {
 
 	slices.SortFunc(finals, func(a, b models.Final) int { return strings.Compare(a.Person.Name, b.Person.Name) })
 
-	outputFinals(finals)
+	outputFinals(finals, w)
 }
 
 // I'm not so sure about the out variable here, but I thought I'd give it a try.
@@ -78,10 +97,10 @@ func fillFinalForPerson(p models.Person, f *models.Final) {
 	wgPerson.Wait()
 }
 
-func outputFinals(finals []models.Final) {
+func outputFinals(finals []models.Final, w io.Writer) {
 	for _, f := range finals {
 		tmpl := template.Must(template.ParseGlob("templates/basic.tmpl"))
-		if err := tmpl.Execute(os.Stdout, f); err != nil {
+		if err := tmpl.Execute(w, f); err != nil {
 			panic(err)
 		}
 	}

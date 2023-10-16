@@ -1,0 +1,16 @@
+<head>
+<title>Agility code challenge</title>
+<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+</head>
+<body>
+	<p>Search for a star wars character</p>
+	<input type="text" name="name"
+    hx-get="/search"
+    hx-trigger="keyup changed delay:500ms"
+    hx-target="#search-results"
+		hx-indicator="#foo"
+    placeholder="Search..."
+	>
+	<p class="htmx-indicator" id="foo">Loading</p>
+	<div id="search-results"></div>
+</body>
